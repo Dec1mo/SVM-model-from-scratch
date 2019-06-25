@@ -1,0 +1,3 @@
+*.pkl
+/classify_data/*
+/pickle/*
