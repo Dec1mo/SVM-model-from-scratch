@@ -49,15 +49,6 @@ def main():
 	with open (r'./pickle/y_test.pkl', 'rb') as file:
 		y_test = pickle.load(file)
 	
-	# Library SVM 
-	Lib_SVM_clf, X_test = classifier(y_train, 1, 0)
-	accuracy = predict(Lib_SVM_clf, X_test, y_test)
-	print ('Accurancy of library-based svm model with CountVectorizer = %.2f%%' %  accuracy) #Accurancy = 86.46%
-	
-	Lib_SVM_clf, X_test = classifier(y_train, 1, 1)
-	accuracy = predict(Lib_SVM_clf, X_test, y_test)
-	print ('Accurancy of library-based svm model with TfidfVectorizer = %.2f%%' %  accuracy) #Accurancy = 88.71%
-	
 	# MultinomialNB
 	NB_clf, X_test = classifier(y_train, 0, 0)
 	accuracy = predict(NB_clf, X_test, y_test)
@@ -67,12 +58,29 @@ def main():
 	accuracy = predict(NB_clf, X_test, y_test)
 	print ('Accurancy of MultinomialNB model with TfidfVectorizer = %.2f%%' %  accuracy) #Accurancy = 81.72%
 	
+	# Library SVM 
+	Count_lib_SVM_clf, X_test = classifier(y_train, 1, 0)
+	with open (r'./pickle/Count_lib_SVM_clf.pkl', 'wb') as file:
+		pickle.dump(Count_lib_SVM_clf, file)
+	accuracy = predict(Count_lib_SVM_clf, X_test, y_test)
+	print ('Accurancy of library-based svm model with CountVectorizer = %.2f%%' %  accuracy) #Accurancy = 86.46%
+	
+	Tfidf_lib_SVM_clf, X_test = classifier(y_train, 1, 1)
+	with open (r'./pickle/Tfidf_lib_SVM_clf.pkl', 'wb') as file:
+		pickle.dump(Tfidf_lib_SVM_clf, file)
+	accuracy = predict(Tfidf_lib_SVM_clf, X_test, y_test)
+	print ('Accurancy of library-based svm model with TfidfVectorizer = %.2f%%' %  accuracy) #Accurancy = 88.71%
+	
 	# CustomSVM
+	'''
 	Count_cus_SVM_clf, X_test = classifier(y_train, 2, 0)
 	with open (r'./pickle/Count_cus_SVM_clf.pkl', 'wb') as file:
 		pickle.dump(Count_cus_SVM_clf, file)
-	accuracy = predict(Lib_SVM_clf, X_test, y_test)
-	print ('Accurancy of custom SVM model with CountVectorizer = %.2f%%' %  accuracy) #Accurancy = 86.46%
+	'''
+	with open (r'./pickle/Count_cus_SVM_clf.pkl', 'rb') as file:
+		Count_cus_SVM_clf = pickle.load(file)
+	accuracy = predict(Count_cus_SVM_clf, X_test, y_test)
+	print ('Accurancy of custom SVM model with CountVectorizer = %.2f%%' %  accuracy) #Accurancy = 79.60% - Maybe lambda got some nonces
 	'''
 	Tfidf_cus_SVM_clf, X_test = classifier(y_train, 2, 1)
 	with open (r'./pickle/Tfidf_cus_SVM_clf.pkl', 'wb') as file:
@@ -81,7 +89,7 @@ def main():
 	with open (r'./pickle/Tfidf_cus_SVM_clf.pkl', 'rb') as file:
 		Tfidf_cus_SVM_clf = pickle.load(file)
 	accuracy = predict(Tfidf_cus_SVM_clf, X_test, y_test)
-	print ('Accurancy of custom SVM model with TfidfVectorizer = %.2f%%' %  accuracy) #Accurancy = 88.48%
+	print ('Accurancy of custom SVM model with TfidfVectorizer = %.2f%%' %  accuracy) #Accurancy = 86.88%
 	
 if __name__ == '__main__':
 	main()

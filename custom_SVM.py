@@ -31,7 +31,6 @@ class CustomSVM(): #One vs One
 		'''
 		#Construct K = V.T @ V
 		V = sparse.vstack([X1, -X2]).T #V is a sparse matrix
-		print ('V shape = {}'.format(V.shape))
 		K = (V.T @ V) # K is a sparse matrix
 		K = K.astype('double')
 		K = matrix(K.todense())
@@ -56,8 +55,8 @@ class CustomSVM(): #One vs One
 		solvers.options['show_progress'] = False
 		sol = solvers.qp(K, q, G, h, A, b)
 		l = np.array(sol['x'])
-		print('lambda = ')
-		print(l.T)
+		#print('lambda = ')
+		#print(l.T)
 		
 		#Calculate w and b after known lambda
 		X = sparse.vstack([X1, X2]).T
@@ -66,13 +65,12 @@ class CustomSVM(): #One vs One
 		epsilon = 1e-6
 		S = np.where(l > epsilon)[0]
 		b = np.mean(y[:,S].T - w.T.dot(X.todense()[:,S]))
-		#print (b)
 		return w, b
 	
 	def fit(self, X_train, y_train): #X_train is a sparse matrix; y_train is a list
 		set_y_train = set(y_train) # number of class = len(set_y_train)
 		self.labels = list(set_y_train)
-		print ('Number of labels = {}'.format(len(self.labels)))
+		#print ('Number of labels = {}'.format(len(self.labels)))
 		X_trains = []
 		for label in set_y_train:
 			X = None
@@ -80,7 +78,6 @@ class CustomSVM(): #One vs One
 				if label == y_train[i]:
 					X = sparse.vstack([X, X_train[i]])
 			X_trains.append(X)
-		print ('type of X_train: {}'.format(type(X_train)))
 		for i in range(len(set_y_train)):
 			for j in range(i+1, len(set_y_train)):
 				#construct binary SVM: from (i-th and j-th) X_Train
